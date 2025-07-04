@@ -3,11 +3,8 @@ import { UserContext } from '../contexts/Context'
 import { ProductContext } from '../contexts/ProductContext'
 import ProductCard from '../components/productCard/ProductCard'
 import CategoryPreviewComponent from '../components/categoryPreview/CategoryPreviewComponent'
-import { Route, Routes } from 'react-router-dom'
-import CategoriesPreview from './CategoriesPreview'
-import Category from './Category'
 
-const Shop = () => {
+const CategoriesPreview = () => {
     const {data}=useContext(ProductContext)
 
   
@@ -15,13 +12,19 @@ const Shop = () => {
  
 
   return (
-       <Routes>
-        <Route index element={<CategoriesPreview/>}/>
-        <Route path=':category' element={<Category/>}/>
-       </Routes>
+      <div className='shop-container'>
+        {data.length>0&&Object.keys(data).map((keys,index)=>{
+          const eachObjData=data[keys]
+          return(
+            <CategoryPreviewComponent key={index} product={eachObjData}/>
+          )
+        })}
+  
+      
+    </div>
  
  
   )
 }
 
-export default Shop
+export default CategoriesPreview

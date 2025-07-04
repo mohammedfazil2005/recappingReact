@@ -11,7 +11,7 @@ import { ProductContext } from "../contexts/ProductContext"
 
 const Navigation = () => {
     const {currentUser,setCurrentUser}=useContext(UserContext)
-    const {showDropDown}=useContext(ProductContext)
+    const {showDropDown,cartQuantity}=useContext(ProductContext)
 
     const LogoutUser=async()=>{
         await SignOutUser()
@@ -34,7 +34,7 @@ const Navigation = () => {
                 <div className="nav-links-container">
                     <Link className="nav-link" to={'/shop'}>SHOP</Link>
                     {currentUser?<span className="nav-link" onClick={LogoutUser}>Sign out</span>:<Link className="nav-link" to={'/signin'}>SIGN IN</Link>}
-                    <CartIcon />
+                    <CartIcon count={cartQuantity}/>
                     
                 </div>
                 {showDropDown&&<CartDropdown/>}

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth,GoogleAuthProvider,signInWithRedirect,signInWithPopup, createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc,writeBatch,collection,query, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBQ2J50znWbkPAduFMW01DEuzS8QZqkn2w",
@@ -57,6 +57,17 @@ const createUserDocument=async(userAuth,additionalDetails={})=>{
 
 }
 
+const AddCollectionAndDocument=async(collectionKey,allDocuments)=>{
+  const collectionRef=collection(database,collectionKey)
+  const batch=writeBatch(database)
+
+  allDocuments.forEach((eachDoc)=>{
+    const docRef=doc(collectionRef,eachDoc.title.toLowerCase())  //here we dont need to db aslo because collection method already fetch db
+    batch.set(docRef,eachDoc)
+  })
+  await batch.commit()
+}
+
 
 const createAuthUserWithEmailAndPassword=async(email,password)=>{
     return await  createUserWithEmailAndPassword(auth,email,password)
@@ -74,8 +85,39 @@ const onChangeAuth=(callback)=>{
   return onAuthStateChanged(auth,callback)
 }
 
+const getCategoriesAndDocuments=async()=>{
+  const collectionRef=collection(database,"categories")
+  const q=query(collectionRef)
+  const querySnapshot=await getDocs(q)
 
-export {auth,signInWithGooglePopup,signUserWithEmailAndPassoword,database,createUserDocument,signInWithGoogleRedirect,createAuthUserWithEmailAndPassword,SignOutUser,onChangeAuth}
+  const categoryMap=querySnapshot.docs.map((a)=>{
+    let {title,items}=a.data()
+    let data={};
+    data[title.toLowerCase()]=items
+    return data
+  })
+
+ return categoryMap
+
+
+}
+
+const filterCategories=async(title)=>{
+  const collectionRef=collection(database,"categories")
+  const productSnapshot=await getDocs(collectionRef)
+
+  const categoryMap=productSnapshot.docs.map((a)=>a.data())
+
+  const filterData=categoryMap.filter((a)=>a.title.toLowerCase()==title)
+
+
+  return filterData[0]
+
+
+}
+
+
+export {auth,signInWithGooglePopup,signUserWithEmailAndPassoword,database,createUserDocument,signInWithGoogleRedirect,createAuthUserWithEmailAndPassword,SignOutUser,onChangeAuth,AddCollectionAndDocument,getCategoriesAndDocuments,filterCategories}
 
 
 // AV1ZR0dVcaPDJ6Hli3625ru3e693

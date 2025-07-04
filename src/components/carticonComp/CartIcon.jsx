@@ -3,7 +3,7 @@ import CartImage from '../../../assets/shopping-bag.svg'
 import './CartIcon.scss'
 import { ProductContext } from '../../contexts/ProductContext'
 
-const CartIcon = () => { 
+const CartIcon = ({count}) => { 
     const {showDropDown,setShowDropDown}=useContext(ProductContext)
 
     const toggleDropdown=()=>{
@@ -17,7 +17,7 @@ const CartIcon = () => {
   return (
     <div className='cart-icon-container' onClick={toggleDropdown}>
       <img src={CartImage} alt="" />
-      <span className='item-count'>0</span>
+      <span className='item-count'>{count}</span>
     </div>
   )
 }
