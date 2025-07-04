@@ -1,6 +1,7 @@
 import React from 'react'
 import CategoryID from '../categoryID/CategoryID'
 import './Categoires.style.scss'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Categories = () => {
      const categories=[
@@ -30,10 +31,11 @@ const Categories = () => {
     imageUrl: "https://i.ibb.co/R70vBrQ/men.png"
   }
 ]
+     const navigate=useNavigate()
   return (
-    <div className='categories-container'>
+    <div  className='categories-container'>
       {categories.map((a,key)=>(
-      <CategoryID data={a} key={a.id}/>
+    <CategoryID data={a} key={a.id}/>
       ))}
     </div>
   )

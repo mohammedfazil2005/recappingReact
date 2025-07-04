@@ -7,6 +7,7 @@ import { SignOutUser } from "../services/firebase/FirebaseUtile"
 import CartIcon from "../components/carticonComp/CartIcon"
 import CartDropdown from "../components/cart-dropdown/CartDropdown"
 import { ProductContext } from "../contexts/ProductContext"
+import {NavigationComp,LogoContainer,NavLinks,NavLinksContainer} from '../styleComp'
 
 
 const Navigation = () => {
@@ -26,20 +27,20 @@ const Navigation = () => {
     return (
         <Fragment>
 
-            <div className="navigation">
-                <Link className="logo-container" to={'/'}>
+            <NavigationComp>
+                <LogoContainer to={'/'}>
                    <img src={Crown} alt="" />
-                </Link>
+                </LogoContainer>
 
-                <div className="nav-links-container">
-                    <Link className="nav-link" to={'/shop'}>SHOP</Link>
+                <NavLinksContainer>
+                    <NavLinks to={'/shop'}>SHOP</NavLinks>
                     {currentUser?<span className="nav-link" onClick={LogoutUser}>Sign out</span>:<Link className="nav-link" to={'/signin'}>SIGN IN</Link>}
                     <CartIcon count={cartQuantity}/>
                     
-                </div>
+                </NavLinksContainer>
                 {showDropDown&&<CartDropdown/>}
                 
-            </div>
+            </NavigationComp>
             <Outlet />
 
         </Fragment>
